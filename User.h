@@ -1,6 +1,5 @@
 #ifndef USER_H
 #define USER_H
-//#include <string>
 #include <iostream>
 #include <stdlib.h>
 using namespace std;
@@ -8,14 +7,16 @@ using namespace std;
 class User{
     private:
         int userID;
-        string correo, contrasena;
+        string correo, contrasena, nombre;
+        string getUserPassword(); // Checar
     public:
-        User();
+        User(int, string, string, string);
         ~User();
-        void login();
-        void registrar();
-        void logout();
-        void deletePedido();  
+        void login(); //ver como hacer el login
+        void logout();  //ver como se hace el logout
+        int getUserID();
+        string getUserName();
+        string getUserEmail();
 };
 
 #endif
