@@ -17,9 +17,9 @@ User::~User(){
 }
 
 //Ingresar a la sesion
-void User::login(){
+//void User::login(){
 
-}
+//}
 
 
 // Salirse de la sesión
