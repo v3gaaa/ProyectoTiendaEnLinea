@@ -2,7 +2,9 @@
 #define CLIENTE_H
 #include <iostream>
 #include <stdlib.h>
+#include <string>
 #include "User.h"
+#include "Pedido.h"
 using namespace std;
 
 class Cliente:public User{
@@ -10,8 +12,9 @@ class Cliente:public User{
         string direccionEntrega;
         double balance;
     public:
-        Cliente(int, string, string, string, string, double);
+        Cliente(int _userID, string _nombre, string _correo, string _contrasena, string direccionEntrega, double balance);
         ~Cliente();
+        int getClientID();
 };
 
 #endif
