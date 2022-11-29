@@ -6,7 +6,7 @@ using namespace std;
 
 class Admin: public User{
     public:
-        Admin();
+        Admin(int _userID, string _nombre, string _correo, string _contrasena);
         ~Admin();
         void addProd();
         void deleteProd();
