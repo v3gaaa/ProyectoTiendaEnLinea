@@ -21,8 +21,6 @@ using namespace std;
 
 //Variables GLOBALES
 vector<Producto> Productos; //Vector con todos los pasajeros
-int contProd = 0; //contador de productos
-
 
 
     //Nombre:filldata
@@ -34,36 +32,33 @@ int contProd = 0; //contador de productos
 //
 void filldata(){
     //Variables Producto
-    string myText,myText2;
+    string texto;
     int cantidad;
-    int counter=0;
+    int cont=0;
     double precio; 
     Producto producto;
     //Personas
 
     //Se realiza una lectura en el archivo contenedor de productos
     ifstream MyReadFile("productos.txt");
-    while (getline (MyReadFile, myText)) {//mientras que existan lineas en el archivo
-
-        istringstream ss(myText); //Agarra lo que haya en la linea y lo pone como string
+    while (getline (MyReadFile, texto)) {//mientras que existan lineas en el archivo
+        istringstream ss(texto); //Agarra lo que haya en la linea y lo pone como string
         do { 
             string word; 
             ss >> word; //se crea un string por linea y va rellenando el objeto producto
-            if(counter== 0){
+            if(cont== 0){
                 producto.setNombre(word);
-            }
-            else if(counter== 1){
-                    precio = stoi(word);
-                    producto.setPrecio(precio);
-            }
-            else if(counter== 2){
+            }else if(cont== 1){
+                precio = stoi(word);
+                producto.setPrecio(precio);
+            }else if(cont== 2){
                 cantidad = stoi(word); //stoi convierte de valor string a valor numerico
                 producto.setCantidad(cantidad);
             }
-            counter++;
+            cont++;
         } while (ss);
         Productos.push_back(producto); //añadimos el objeto producto al vector productos
-        counter=0;
+        cont=0;
     }
     MyReadFile.close(); //CERRAMOS EL ARCHIVO
 }
@@ -75,8 +70,10 @@ void filldata(){
 int main(){
 
     filldata();
+    cout << Productos[0].getNombreProducto()<< endl; //USAMOS EL METODO GET NOMBRE EN EL OBJETO GUARDADO EN EL VECTOR PRODUCTOS EN LA POSICION 0
+    cout << Productos[0].getPrecioProducto()<< endl;
 
-    Producto producto[11];
+    /*Producto producto[11];
     producto[0] = Producto("Cerveza Pacífico", 19, 12);
     producto[1] = Producto("Cerveza Modelo", 20, 5);
     producto[2] = Producto("Cerveza Barrilito", 12, 23);
@@ -87,7 +84,7 @@ int main(){
     producto[7] = Producto("Cerveza Ultra", 19.20, 9);
     producto[8] = Producto("Cerveza Minerva", 40, 23);
     producto[9] = Producto("Cerveza Tres Islas", 39, 7);
-    producto[10] = Producto("Cerveza Bichola", 45, 4);
+    producto[10] = Producto("Cerveza Bichola", 45, 4);*/
 
     /*
     Cliente c1(123, "Pepe", "adaa@", "ascdaa", "adfada", 1231.1231);
@@ -107,10 +104,9 @@ int main(){
 
     //APARTIR DE AQUI EMPIEZA EL CODIGO BIEN ARRIBA SON PURAS PRUEBAS
     
-    printf("BIENVENIDO A NUESTRA TIENDA ONLINE: \n");
+    /*printf("BIENVENIDO A NUESTRA TIENDA ONLINE: \n");
     int opc = 0;
     printf("Ingrese: \n1:Login  \n2:Registro\n");
-    /*
     do{
         switch (opc){
             case 1: //LOGIN
@@ -137,7 +133,7 @@ int main(){
 */
 
 
-    int n, opcion;
+    /*int n, opcion;
     do {
         printf("Productos disponibles: \n");
         printf("%s:  |  Precio: %f\n", producto[0].getNombreProducto(), producto[0].getPrecioProducto());
@@ -170,7 +166,7 @@ int main(){
                 break;
         }
 
-    } while (true);
+    } while (true);*/
 
     return 0;
 }

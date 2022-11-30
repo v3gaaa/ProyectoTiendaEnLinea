@@ -14,7 +14,6 @@ class Producto{
         Producto();
         Producto(string, double, int);
         ~Producto();
-        void editProducto();
         string getNombreProducto();
         double getPrecioProducto();
         int getCantidadProducto();
