@@ -1,6 +1,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string>
+#include <fstream>
+#include <vector>
 #include "Carrito.h"
 #include "Producto.cpp"
 using namespace std;
