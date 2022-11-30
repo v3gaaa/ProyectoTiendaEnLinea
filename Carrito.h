@@ -13,7 +13,7 @@ class Carrito{
     public:
         Carrito();
         ~Carrito();
-        void addProdCar();
+        void addProdCar(vector<Producto>);
         void borrarProdCar();
         string displayCarrito();
 };
