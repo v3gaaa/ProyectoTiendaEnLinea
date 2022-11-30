@@ -8,12 +8,12 @@ using namespace std;
 
 class Carrito{
     protected:
-        Producto listaProducto[100];
+        vector<Producto> productosCarr;
         double totalCompra;
     public:
         Carrito();
         ~Carrito();
-        void addProdCar(vector<Producto>);
+        void addProdCar();
         void borrarProdCar();
         string displayCarrito();
 };
