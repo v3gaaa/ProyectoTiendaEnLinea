@@ -46,3 +46,17 @@ string User::getUserEmail(){
 string User::getUserPassword(){
     return contrasena;
 }
+
+
+void User::setUserID(int _ID){
+    userID = _ID;
+}
+void User::setUserEmail(string _correo){
+    correo = _correo;
+}
+void User::setUserPassword(string _contrasena){
+    contrasena = _contrasena;
+}   
+void User::setUserName(string _name){
+    nombre = _name;
+}

@@ -18,6 +18,10 @@ class User{
         int getUserID();
         string getUserName();
         string getUserEmail();
+        void setUserID(int);
+        void setUserEmail(string);
+        void setUserPassword(string);
+        void setUserName(string);
 };
 
 #endif
