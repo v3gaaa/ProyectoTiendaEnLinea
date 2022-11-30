@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string>
 #include "Carrito.h"
-//#include "Producto.cpp"
+#include "Producto.cpp"
 using namespace std;
 
 // Constructor
@@ -15,24 +15,8 @@ Carrito::~Carrito(){
 
 // Agregar productos al carrito
 void Carrito::addProdCar(){
-    string producto;
-    cout << "Que producto quieres agregar: " << endl;
-    cin >> producto;
-
-    for(int i=0;i<100;i++){
-        if (listaProducto[i] == producto){
-            Producto objetoprod == listaProducto[i];
-        }
-    }
-
-
-
-    for(int i=0;listaProducto[i]=="";i++){
-        if (listaProducto[i] == ""){
-            listaProducto[i] = objetoprod;
-        }
-
-    }
+    cout << "Ingrese el nombre del producto que desea agregar" <<endl;
+    
 }
 
 // Borrar productos del Carrito
