@@ -18,6 +18,9 @@ class Producto{
         string getNombreProducto();
         double getPrecioProducto();
         int getCantidadProducto();
+        void setNombre(string);
+        void setPrecio(double);
+        void setCantidad(int);
 };
 
 #endif

@@ -1,6 +1,12 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string>
+#include <vector>
+#include <fstream>
+#include <sstream> 
+#include <cstring>
+#include <algorithm>
+
 #include "User.cpp"
 #include "Cliente.cpp"
 #include "Pedido.cpp"
@@ -8,7 +14,68 @@
 #include "Producto.cpp"
 using namespace std;
 
+
+
+
+//NO TOCAR O LOS MATO
+
+//Variables GLOBALES
+vector<Producto> Productos; //Vector con todos los pasajeros
+int contProd = 0; //contador de productos
+
+
+
+    //Nombre:filldata
+//Descripcion: Metodo para llenar los objetos y vectores PRODUCTO
+//              
+//Entrada:
+//          
+//Salida:
+//
+void filldata(){
+    //Variables Producto
+    string myText,myText2;
+    int cantidad;
+    int counter=0;
+    double precio; 
+    Producto producto;
+    //Personas
+
+    //Se realiza una lectura en el archivo contenedor de productos
+    ifstream MyReadFile("productos.txt");
+    while (getline (MyReadFile, myText)) {//mientras que existan lineas en el archivo
+
+        istringstream ss(myText); //Agarra lo que haya en la linea y lo pone como string
+        do { 
+            string word; 
+            ss >> word; //se crea un string por linea y va rellenando el objeto producto
+            if(counter== 0){
+                producto.setNombre(word);
+            }
+            else if(counter== 1){
+                    precio = stoi(word);
+                    producto.setPrecio(precio);
+            }
+            else if(counter== 2){
+                cantidad = stoi(word); //stoi convierte de valor string a valor numerico
+                producto.setCantidad(cantidad);
+            }
+            counter++;
+        } while (ss);
+        Productos.push_back(producto); //añadimos el objeto producto al vector productos
+        counter=0;
+    }
+    MyReadFile.close(); //CERRAMOS EL ARCHIVO
+}
+
+
+
+
+
 int main(){
+
+    filldata();
+
     Producto producto[11];
     producto[0] = Producto("Cerveza Pacífico", 19, 12);
     producto[1] = Producto("Cerveza Modelo", 20, 5);

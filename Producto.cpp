@@ -26,3 +26,13 @@ double Producto::getPrecioProducto(){
 int Producto::getCantidadProducto(){
     return cantidad;
 }
+
+void Producto::setNombre(string _nombre){
+    nombre = _nombre;
+}
+void Producto::setPrecio(double _precio){
+    precio = _precio;
+}
+void Producto::setCantidad(int _cantidad){
+    cantidad = _cantidad;
+}
