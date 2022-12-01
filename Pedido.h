@@ -3,6 +3,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string>
+#include <vector>
+#include "Producto.cpp"
 using namespace std;
 
 class Pedido{
@@ -13,7 +15,7 @@ class Pedido{
     public:
         Pedido(int, string, double);
         ~Pedido();
-        void finalizarPedido();
+        void iniciarPedido(vector<Producto>);
         int getPedidoID();
 };
 

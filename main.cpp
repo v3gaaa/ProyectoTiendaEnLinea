@@ -104,33 +104,64 @@ int main(){
 
     //APARTIR DE AQUI EMPIEZA EL CODIGO BIEN ARRIBA SON PURAS PRUEBAS
     
-    /*printf("BIENVENIDO A NUESTRA TIENDA ONLINE: \n");
-    int opc = 0;
-    printf("Ingrese: \n1:Login  \n2:Registro\n");
-    do{
-        switch (opc){
-            case 1: //LOGIN
-                printf("Ingrese su correo: ");
-                //TENEMOS QUE BUSCAR UNA FORMA PARA CONFIRMA QUE EXISTA Y/O CREAR UN OBJETO A PARTIR DE ESO
-                printf("\nIngrese contraseña: ");
-                
-                if(Base de datos??? in columna status == Cliente){
-                    userStatus = Cliente;
-                } else{
-                    userStatus = Admin;
-                }
-                break; 
-                
+    printf("BIENVENIDO A NUESTRA TIENDA ONLINE: \n");
+    int opc;
+    printf("Ingrese: \n1:Login  \n2:Registro\n"); cin >> opc;
+    switch (opc){
+        case 1: {//LOGIN
+            bool clave = false, cuentaExiste = false; 
+            User usuario;
+            string correo; cout << "\nIngrese su correo: "; cin >> correo;
+            string contrasena; cout << "Ingrese su contraseña: "; cin >> contrasena;
 
-            case 2: //REGISTRO
-                printf("Ingrese su correo: ");
-                //TENEMOS QUE ENCONTRAR UNA FORMA DE CONFIRMAR QUE EL CORREO NO EXISTA
-                printf("\nIngrese contraseña: ");
-                //SOLO SE PUEDEN REGISTRAR CLIENTES LOS ADMINS YA VAN A ESTAR REGISTRADOS POR DENTRO DEL CODIGO
-                break;
+            usuario.setUserEmail(correo);
+            usuario.setUserPassword(contrasena);
+            usuario = usuario.login(usuario, clave, cuentaExiste);
+            
+            if (clave){ // Si es true el usuario es Admin
+                printf("\nBienvenido %s, eres Admin\n", usuario.getUserName().c_str());
+            } else{
+                printf("\nBienvenido %s, eres un Cliente\n", usuario.getUserName().c_str());
+            }
+            break;
         }
-    } while (true);
-*/
+        case 2: {// REGISTRO
+            bool cuentaExiste = true; // No sabemos si existe su cuenta o no
+            User usuario;
+            string _clave;
+            string nombre; cout << "\nIngrese su nombre: "; cin >> nombre;
+            string correo; cout << "Ingrese su correo: "; cin >> correo;
+            string contrasena; cout << "Ingrese su contraseña: "; cin >> contrasena;
+            int userID; cout << "Ingrese su ID: "; cin >> userID;
+            //int userID = (rand()%(100-2) + 1); // número aleatorio del 1 al 100
+
+            // Saber si se registra una cuenta de Admin o de Cliente
+            if (correo[0] == 'L') {
+                _clave = "admin";
+            } else {
+                _clave = "client";
+            }
+            
+            usuario.setUserEmail(correo);
+            usuario.setUserPassword(contrasena);
+            usuario.setUserName(nombre);
+            usuario.setUserID(userID);
+            usuario.setUserClave(_clave);
+            cuentaExiste = usuario.buscar(usuario);
+
+            if (cuentaExiste) {
+                cout << "¡¡¡Bienvenido, ha creado su cuenta!!!" << endl;
+                ofstream file("users.txt", ios::app);
+                file << userID << " " << correo << " " << contrasena << " " << nombre << " " << _clave << " ";
+	            file.close(); 
+            } else {
+                cout << "Datos incorrectos/repetidos, vuelva a intentarlo" << endl;
+                usuario.~User();
+            }
+            break;
+        }
+    } 
+
 
 
     /*int n, opcion;
