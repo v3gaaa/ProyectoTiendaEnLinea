@@ -14,12 +14,12 @@ class User{
     protected:
         int userID;
         string nombre, correo, contrasena, clave;
-        string getUserPassword(); // Checar
     public:
         User(int, string, string, string);
         User();
         ~User();
-        User login(User, bool&, bool&); //ver como hacer el login
+        bool buscar(User);
+        User login(User, bool&, bool&);
         void logout();  //ver como se hace el logout
         int getUserID();
         string getUserName();
@@ -30,6 +30,7 @@ class User{
         void setUserPassword(string);
         void setUserName(string);
         void setUserClave(string);
+        string getUserPassword(); // Checar
 };
 
 // Constructores
@@ -97,6 +98,39 @@ User User::login(User _usuario, bool &clave, bool &cuentaExiste){
 void User::logout(){
 }
 
+// Busca si ya hay datos registrados
+bool User::buscar(User usuario){
+    ifstream file("users.txt");
+    string texto, _usuarioNombre, _usuarioClave;
+    int _usuarioID;
+    int count = 0;
+    string correo, contrasena;
+    while (getline(file, texto)) { // Se repite según la cantidad de líneas en el documento
+        istringstream ss(texto); // Agarra la linea actual y la hace string
+        while(ss){ // Itera en toda el documento hasta que se acabe
+            switch(count) {
+                case 0: // Obtener el ID
+                    ss >> _usuarioID;
+                case 1: // Obtener el Email
+                    ss >> correo;
+                case 2: // Obtener la Contraseña
+                    ss >> contrasena;
+                case 3: // Obtener el Nombre
+                    ss >> _usuarioNombre;
+                case 4: // Obtener la Clave
+                    ss >> _usuarioClave;
+            }
+            count++;
+            if (correo == usuario.getUserEmail() || contrasena == usuario.getUserPassword()) {
+                file.close();
+                return false;
+            }
+        } 
+        count = 0;
+    }
+    file.close();
+    return true;
+}
 // Getters
 int User::getUserID(){
     return userID;
