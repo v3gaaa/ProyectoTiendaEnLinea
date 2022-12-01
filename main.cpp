@@ -108,18 +108,28 @@ int main(){
     int opc = 0;
     printf("Ingrese: \n1:Login  \n2:Registro\n");
     do{
+        printf("BIENVENIDO A NUESTRA TIENDA ONLINE: \n");
+    int opc = 0;
+    printf("Ingrese: \n1:Login  \n2:Registro\n"); cin >> opc;
+    do{
         switch (opc){
             case 1: //LOGIN
-                printf("Ingrese su correo: ");
-                //TENEMOS QUE BUSCAR UNA FORMA PARA CONFIRMA QUE EXISTA Y/O CREAR UN OBJETO A PARTIR DE ESO
-                printf("\nIngrese contraseña: ");
+                bool clave = false, cuentaExiste = false; 
+                User usuario;
+                string correo; cout << "\nIngrese su correo: "; cin >> correo;
+                string contrasena; cout << "Ingrese su contraseña: "; cin >> contrasena;
+
+                usuario.setUserEmail(correo);
+                usuario.setUserPassword(contrasena);
+                usuario = usuario.login(usuario, clave, cuentaExiste);
                 
-                if(Base de datos??? in columna status == Cliente){
-                    userStatus = Cliente;
+                if (clave){ // Si es true el usuario es Admin
+                    printf("\nBienvenido %s, eres Admin\n", usuario.getUserName().c_str());
                 } else{
-                    userStatus = Admin;
+                    printf("\nBienvenido %s, eres un Cliente\n", usuario.getUserName().c_str());
                 }
-                break; 
+                opc = 0;
+        }
                 
 
             case 2: //REGISTRO
@@ -129,7 +139,7 @@ int main(){
                 //SOLO SE PUEDEN REGISTRAR CLIENTES LOS ADMINS YA VAN A ESTAR REGISTRADOS POR DENTRO DEL CODIGO
                 break;
         }
-    } while (true);
+    } while (opc != 0);
 */
 
 
