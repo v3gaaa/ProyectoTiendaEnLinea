@@ -117,12 +117,17 @@ int main(){
             usuario.setUserEmail(correo);
             usuario.setUserPassword(contrasena);
             usuario = usuario.login(usuario, clave, cuentaExiste);
-            
-            if (clave){ // Si es true el usuario es Admin
-                printf("\nBienvenido %s, eres Admin\n", usuario.getUserName().c_str());
-            } else{
-                printf("\nBienvenido %s, eres un Cliente\n", usuario.getUserName().c_str());
+            if (cuentaExiste) {
+                if (clave){ // Si es true el usuario es Admin
+                    printf("\nBienvenido %s, eres Admin\n", usuario.getUserName().c_str());
+                } else{
+                    printf("\nBienvenido %s, eres un Cliente\n", usuario.getUserName().c_str());
             }
+            } else {
+                cout << "Datos incorrectos/repetidos, vuelva a intentarlo" << endl;
+                usuario.~User();
+            }
+            
             break;
         }
         case 2: {// REGISTRO
@@ -152,7 +157,7 @@ int main(){
             if (cuentaExiste) {
                 cout << "¡¡¡Bienvenido, ha creado su cuenta!!!" << endl;
                 ofstream file("users.txt", ios::app);
-                file << userID << " " << correo << " " << contrasena << " " << nombre << " " << _clave << " ";
+                file << endl << userID << " " << correo << " " << contrasena << " " << nombre << " " << _clave << " ";
 	            file.close(); 
             } else {
                 cout << "Datos incorrectos/repetidos, vuelva a intentarlo" << endl;
