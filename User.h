@@ -96,6 +96,7 @@ User User::login(User _usuario, bool &clave, bool &cuentaExiste){
 
 // Salirse de la sesión
 void User::logout(){
+    
 }
 
 // Busca si ya hay datos registrados
