@@ -6,22 +6,15 @@
 #include <sstream> 
 #include <cstring>
 #include <algorithm>
-
-#include "User.cpp"
-#include "Cliente.cpp"
-#include "Pedido.cpp"
-//#include "Carrito.cpp"
-#include "Producto.cpp"
+#include "Pedido.h"
+#include "Admin.h"
 using namespace std;
 
-
-
-
 //NO TOCAR O LOS MATO
-
-//Variables GLOBALES
-vector<Producto> Productos; //Vector con todos los pasajeros
-
+//Variables GLOBALES //Vector con todos los pasajeros
+void menuAdmin(Admin);
+void menuCliente(Cliente);
+vector<Producto> menuCarrito();
 
     //Nombre:filldata
 //Descripcion: Metodo para llenar los objetos y vectores PRODUCTO
@@ -30,7 +23,7 @@ vector<Producto> Productos; //Vector con todos los pasajeros
 //          
 //Salida:
 //
-void filldata(){
+vector<Producto> filldata(vector<Producto> Productos){
     //Variables Producto
     string texto;
     int cantidad;
@@ -50,7 +43,7 @@ void filldata(){
                 producto.setNombre(word);
             }else if(cont== 1){
                 precio = stoi(word);
-                producto.setPrecio(precio);
+                //producto.setPrecio(precio);
             }else if(cont== 2){
                 cantidad = stoi(word); //stoi convierte de valor string a valor numerico
                 producto.setCantidad(cantidad);
@@ -61,148 +54,189 @@ void filldata(){
         cont=0;
     }
     MyReadFile.close(); //CERRAMOS EL ARCHIVO
+    return Productos;
+}
+
+int main(){
+    //filldata();
+    //cout << Productos[0].getNombreProducto()<< endl; //USAMOS EL METODO GET NOMBRE EN EL OBJETO GUARDADO EN EL VECTOR PRODUCTOS EN LA POSICION 0
+    //cout << Productos[0].getPrecioProducto()<< endl;
+
+    printf("BIENVENIDO A NUESTRA TIENDA ONLINE: \n");
+    int opc;
+    do {
+        printf("Ingrese: \n1:Login  \n2:Registro\n"); printf("Elija una opción: "); cin >> opc;
+        switch (opc){
+            case 1: {//LOGIN
+                bool clave = false, cuentaExiste = false; 
+                User usuario;
+                string correo; cout << "\nIngrese su correo: "; cin >> correo;
+                string contrasena; cout << "Ingrese su contraseña: "; cin >> contrasena;
+
+                usuario.setUserEmail(correo);
+                usuario.setUserPassword(contrasena);
+                usuario = usuario.login(usuario, clave, cuentaExiste);
+                if (cuentaExiste) {
+                    if (clave){ // Si es true el usuario es Admin
+                        printf("\nBienvenido %s, eres Admin\n", usuario.getUserName().c_str());
+                        Admin adminp(usuario.getUserID(), usuario.getUserName(), usuario.getUserEmail(), usuario.getUserPassword());
+                        usuario.~User();
+                        menuAdmin(adminp);
+
+                        opc = 0;
+                    } else{
+                        printf("\nBienvenido %s\n", usuario.getUserName().c_str());
+                        Cliente cliente(usuario.getUserID(), usuario.getUserName(), usuario.getUserEmail(), usuario.getUserPassword(), "");
+                        usuario.~User();
+                        menuCliente(cliente);
+
+                        opc = 0;
+                }
+                } else {
+                    cout << "Datos incorrectos/repetidos, vuelva a intentarlo\n" << endl;
+                    usuario.~User();
+                }
+                break;
+            }
+            case 2: {// REGISTRO
+                bool cuentaExiste = true; // No sabemos si existe su cuenta o no
+                User usuario;
+                string _clave;
+                string nombre; cout << "\nIngrese su nombre: "; cin >> nombre;
+                string correo; cout << "Ingrese su correo: "; cin >> correo;
+                string contrasena; cout << "Ingrese su contraseña: "; cin >> contrasena;
+                int userID; cout << "Ingrese su ID: "; cin >> userID;
+                //int userID = (rand()%(100-2) + 1); // número aleatorio del 1 al 100
+
+                // Saber si se registra una cuenta de Admin o de Cliente
+                if (correo[0] == 'L') {
+                    _clave = "admin";
+                } else {
+                    _clave = "client";
+                }
+                
+                usuario.setUserEmail(correo);
+                usuario.setUserPassword(contrasena);
+                usuario.setUserName(nombre);
+                usuario.setUserID(userID);
+                usuario.setUserClave(_clave);
+                cuentaExiste = usuario.buscar(usuario);
+
+                if (cuentaExiste) {
+                    printf("¡¡¡Bienvenido, ha creado su cuenta!!!\n");
+                    ofstream file("users.txt", ios::app);
+                    file << endl << userID << " " << correo << " " << contrasena << " " << nombre << " " << _clave << " ";
+                    usuario.~User();
+                    file.close(); 
+                } else {
+                    printf("Datos incorrectos/repetidos, vuelva a intentarlo\n");
+                    usuario.~User();
+                }
+                break;
+            }
+        } 
+    } while (opc != 0);
+    
+    
+    //filldata();
+
+    /*
+    cout << Productos[0].getNombreProducto()<< endl; //USAMOS EL METODO GET NOMBRE EN EL OBJETO GUARDADO EN EL VECTOR PRODUCTOS EN LA POSICION 0
+    cout << Productos[0].getPrecioUnitario()<< endl;
+    */
+    //Pedido prueba(1, "prrueba", 34.);
+    return 0;
 }
 
 
-
-
-
-int main(){
-
-    filldata();
-    cout << Productos[0].getNombreProducto()<< endl; //USAMOS EL METODO GET NOMBRE EN EL OBJETO GUARDADO EN EL VECTOR PRODUCTOS EN LA POSICION 0
-    cout << Productos[0].getPrecioProducto()<< endl;
-
-    /*Producto producto[11];
-    producto[0] = Producto("Cerveza Pacífico", 19, 12);
-    producto[1] = Producto("Cerveza Modelo", 20, 5);
-    producto[2] = Producto("Cerveza Barrilito", 12, 23);
-    producto[3] = Producto("Cerveza Bohemia", 20.5, 4);
-    producto[4] = Producto("Cerveza Zorra", 99.35, 10);
-    producto[5] = Producto("Cerveza Tecate", 15.5, 31);
-    producto[6] = Producto("Cerveza Stella Artois", 25, 19);
-    producto[7] = Producto("Cerveza Ultra", 19.20, 9);
-    producto[8] = Producto("Cerveza Minerva", 40, 23);
-    producto[9] = Producto("Cerveza Tres Islas", 39, 7);
-    producto[10] = Producto("Cerveza Bichola", 45, 4);*/
-
-    /*
-    Cliente c1(123, "Pepe", "adaa@", "ascdaa", "adfada", 1231.1231);
-    cout << c1.getClientID() << endl;
-
-    Pedido p1(123, "qrq", 123.1231323);
-    cout << p1.getPedidoID() << endl;
-
-    Carrito car1("apple, mango, banana", 1500);
-    cout << car1.displayCarrito() << endl;
-
-    Producto prod1("Manzana", 123.123, 12);
-    cout << prod1.getNombreProducto() << endl;
-
-    cout << producto[0].getNombreProducto() << endl;
-    */
-
-    //APARTIR DE AQUI EMPIEZA EL CODIGO BIEN ARRIBA SON PURAS PRUEBAS
-    
-    printf("BIENVENIDO A NUESTRA TIENDA ONLINE: \n");
-    int opc;
-    printf("Ingrese: \n1:Login  \n2:Registro\n"); cin >> opc;
-    switch (opc){
-        case 1: {//LOGIN
-            bool clave = false, cuentaExiste = false; 
-            User usuario;
-            string correo; cout << "\nIngrese su correo: "; cin >> correo;
-            string contrasena; cout << "Ingrese su contraseña: "; cin >> contrasena;
-
-            usuario.setUserEmail(correo);
-            usuario.setUserPassword(contrasena);
-            usuario = usuario.login(usuario, clave, cuentaExiste);
-            if (cuentaExiste) {
-                if (clave){ // Si es true el usuario es Admin
-                    printf("\nBienvenido %s, eres Admin\n", usuario.getUserName().c_str());
-                } else{
-                    printf("\nBienvenido %s, eres un Cliente\n", usuario.getUserName().c_str());
-            }
-            } else {
-                cout << "Datos incorrectos/repetidos, vuelva a intentarlo" << endl;
-                usuario.~User();
-            }
-            
-            break;
-        }
-        case 2: {// REGISTRO
-            bool cuentaExiste = true; // No sabemos si existe su cuenta o no
-            User usuario;
-            string _clave;
-            string nombre; cout << "\nIngrese su nombre: "; cin >> nombre;
-            string correo; cout << "Ingrese su correo: "; cin >> correo;
-            string contrasena; cout << "Ingrese su contraseña: "; cin >> contrasena;
-            int userID; cout << "Ingrese su ID: "; cin >> userID;
-            //int userID = (rand()%(100-2) + 1); // número aleatorio del 1 al 100
-
-            // Saber si se registra una cuenta de Admin o de Cliente
-            if (correo[0] == 'L') {
-                _clave = "admin";
-            } else {
-                _clave = "client";
-            }
-            
-            usuario.setUserEmail(correo);
-            usuario.setUserPassword(contrasena);
-            usuario.setUserName(nombre);
-            usuario.setUserID(userID);
-            usuario.setUserClave(_clave);
-            cuentaExiste = usuario.buscar(usuario);
-
-            if (cuentaExiste) {
-                cout << "¡¡¡Bienvenido, ha creado su cuenta!!!" << endl;
-                ofstream file("users.txt", ios::app);
-                file << endl << userID << " " << correo << " " << contrasena << " " << nombre << " " << _clave << " ";
-	            file.close(); 
-            } else {
-                cout << "Datos incorrectos/repetidos, vuelva a intentarlo" << endl;
-                usuario.~User();
-            }
-            break;
-        }
-    } 
-
-
-
-    /*int n, opcion;
+void menuAdmin(Admin a){
+    int validator = 0;
     do {
-        printf("Productos disponibles: \n");
-        printf("%s:  |  Precio: %f\n", producto[0].getNombreProducto(), producto[0].getPrecioProducto());
-        printf("%s:  |  Precio: %f\n", producto[1].getNombreProducto(), producto[1].getPrecioProducto());
-        printf("%s:  |  Precio: %f\n", producto[2].getNombreProducto(), producto[2].getPrecioProducto());
-        printf("%s:  |  Precio: %f\n", producto[3].getNombreProducto(), producto[3].getPrecioProducto());
-        printf("%s:  |  Precio: %f\n", producto[4].getNombreProducto(), producto[4].getPrecioProducto());
-        printf("%s:  |  Precio: %f\n", producto[5].getNombreProducto(), producto[5].getPrecioProducto());
-        printf("%s:  |  Precio: %f\n", producto[6].getNombreProducto(), producto[6].getPrecioProducto());
-        printf("%s:  |  Precio: %f\n", producto[7].getNombreProducto(), producto[7].getPrecioProducto());
-        printf("%s:  |  Precio: %f\n", producto[8].getNombreProducto(), producto[8].getPrecioProducto());
-        printf("%s:  |  Precio: %f\n", producto[9].getNombreProducto(), producto[9].getPrecioProducto());
-        printf("%s:  |  Precio: %f\n", producto[10].getNombreProducto(), producto[10].getPrecioProducto());
-        printf("Elija una opción: ");
-
-
-        scanf("%d", &opcion);
-
-
-        switch (opcion){
-            case 1: //CODIGO
-                    
-
-            case 2: //CODIGO
-                    
-
-            case 3: //CODIGO
-
-            default:
-                break;
+        printf("Ingresa cual opcion quieres ejecutar como admin \n");
+        printf("1. Añadir producto\n2.Añadir Cliente \n3.Salir");
+        int opc; cin>>opc;
+        switch (opc){
+            case 1: {
+                printf("Ingresa el nombre de producto (sin espacios): "); string name; cin>>name;
+                printf("Ingresa el precio unitario del producto: "); int precioU; cin>>precioU;
+                a.addProd(name, precioU);
+            }
+            case 2: {
+                printf("Ingresa el id del cliente: "); int id; cin >>id;
+                printf("Ingresa el nombre del cliente: "); string name; cin >>name;
+                printf("Ingresa el correo del cliente: "); string email; cin>>email;
+                printf("Ingresa la contrasena del cliente: "); string pass; cin>>pass;
+                a.addClient(id, name, email, pass);
+            }
+            case 3: {
+                validator = 1;
+            }
+            break;
         }
+    } while (validator == 0);
+}
 
-    } while (true);*/
+void menuCliente(Cliente c){
+    int validator = 0;
+    do {
+        printf("\n                    OPCIONES\n");
+        printf("1. Iniciar Compra\n2. Finalizar Pedido \n3. Salir\n"); int opc; cin>>opc;
+        vector<Producto> productosCarro;
+        switch (opc){
+            case 1: {
+                productosCarro = menuCarrito();
+                //cout << productosCarro[0].getNombreProducto();
+                break;
+            }
+            case 2: {
+                cout << productosCarro[0].getNombreProducto() << endl;
+                Pedido p;
+                p.iniciarPedido(productosCarro, c);
+            }
+            case 3:{
+                validator = 1;
+                break;
+            }
+            break;
+        }
+    } while(validator == 0);
+}
 
-    return 0;
+vector<Producto> menuCarrito(){
+    Carrito car1;
+    int n, opcion;
+    vector<Producto> Productos;
+    Productos = filldata(Productos);
+    //cout << Productos[1].getNombreProducto() << endl;
+    do
+    {
+        cout << "\n 1. Ingresar Productos";
+        cout << "\n 2. Display Carrito";
+        cout << "\n 3. Borrar Productos";
+        cout << "\n 4. Salir" <<endl;
+
+        cin >> opcion;
+
+        switch ( opcion )
+        {
+            case 1: {
+                car1.addProdCar(Productos);
+                break;
+            }
+
+            case 2: {
+                car1.displayCarrito();
+                break;
+            }
+
+            case 3: {
+                car1.borrarProdCar();
+                break;
+            }
+        } 
+
+    } while ( opcion != 4 );
+
+    // Rergresar al menú del cliente
+    return car1.getVectorProducto();
 }
